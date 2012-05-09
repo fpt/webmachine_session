@@ -1,0 +1,12 @@
+{application, webmachine_session,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { webmachine_session_app, []}},
+  {env, []}
+ ]}.
