@@ -30,7 +30,8 @@
 -author('Youichi Fujimoto <yofujimo@gmail.com>').
 -behaviour(gen_server).
 
--export([init/1,
+-export([start_link/0,
+         init/1,
          handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3,
          initialize/2,
@@ -77,7 +78,7 @@ session_update(SessionId, List)->
         value ->
 %            erlang:display(Map),
 %            erlang:display(dict:from_list(List)),
-            mochikit_session:put(
+            webmachine_session:put(
                 list_to_atom(SessionId),
                 dict:merge(fun(_, _, V) -> V end, Map, dict:from_list(List)))
     end.
@@ -95,6 +96,10 @@ generate_session_id() ->
     lists:flatten(io_lib:format("~40.16.0b", [Mac])).
     %io:format("<<~s>>~n", [[io_lib:format("~2.16B",[X]) || <<X:8>> <= Mac ]]).
 
+
+%% @spec start_link() -> {ok, pid()} | {error, any()}
+%% @doc Starts the webmachine_session gen_server.
+start_link() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 % These are all wrappers for calls to the server
 start() -> gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).

@@ -24,5 +24,15 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    Session = {webmachine_session,
+              {webmachine_session, start_link, []},
+              permanent, 5000, worker, [webmachine_session]},
+    Processes = [Session],
+    {ok, { {one_for_one, 5, 10}, Processes} }.
+%%
+%% Tests
+%%
+-ifdef(TEST).
+-include_lib("eunit/include/eunit.hrl").
+-endif.
 
